@@ -20,6 +20,7 @@
 
             <ImageView
                 android:id="@+id/home_crest"
+                android:contentDescription="@string/home_team_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center" />
@@ -27,6 +28,7 @@
             <TextView
                 android:id="@+id/home_name_widget"
                 android:layout_width="wrap_content"
+                android:contentDescription="@string/home_team"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -47,6 +49,7 @@
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:contentDescription="@string/match_result"
                 android:gravity="center"
                 android:text="@string/test_text"
                 android:textColor="#000"
@@ -56,6 +59,7 @@
                 android:id="@+id/data_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                android:contentDescription="@string/game_data"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -72,6 +76,7 @@
 
             <ImageView
                 android:id="@+id/away_crest"
+                android:contentDescription="@string/away_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center" />
@@ -82,6 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:contentDescription="@string/away_name"
                 android:text="@string/test_text"
                 android:textColor="#000"
                 android:textSize="@dimen/TeamNames" />
@@ -97,5 +103,6 @@
         android:id="@+id/widget_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/refres_button"
         android:text="Refresh" />
 </LinearLayout>

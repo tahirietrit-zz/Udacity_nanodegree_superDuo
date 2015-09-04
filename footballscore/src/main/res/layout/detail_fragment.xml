@@ -10,6 +10,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:contentDescription="@string/league_textview"
             android:layout_weight="1"
             android:text="@string/test_text"
             android:textColor="@android:color/black"
@@ -18,6 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/match_day"
             android:gravity="center"
             android:layout_weight="1"
             android:text="@string/test_text"
@@ -35,10 +37,11 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:text="@string/share_text"
+            android:contentDescription="@string/share_button_results"
         android:id="@+id/share_button"
-        android:drawableLeft="@android:drawable/ic_menu_share"
-        android:paddingLeft="120dp"
-        android:paddingRight="120dp"/>
+        android:drawableStart="@android:drawable/ic_menu_share"
+        android:paddingStart="120dp"
+        android:paddingEnd="120dp"/>
     </FrameLayout>
 
 </LinearLayout>

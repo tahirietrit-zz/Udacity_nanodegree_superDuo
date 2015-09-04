@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -90,8 +91,8 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             public void afterTextChanged(Editable s) {
 
                 String ean = s.toString();
-                getBook(ean);
-                //catch isbn10 numbers
+                if(isOnline())
+                    getBook(ean);
 
             }
         });
@@ -151,14 +152,6 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         if (ean.length() == 10 && !ean.startsWith("978")) {
             ean = "978" + ean;
         }
-        if (ean.length() < 13) {
-            clearFields();
-            return;
-        }
-
-
-        System.out.println("Text: " + ean.length());
-        //Once we have an ISBN, start a book intent
         if (ean.length() == 13) {
             Intent bookIntent = new Intent(getActivity(), BookService.class);
             bookIntent.putExtra(BookService.EAN, ean);
@@ -204,9 +197,13 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         ((TextView) rootView.findViewById(R.id.bookSubTitle)).setText(bookSubTitle);
 
         String authors = data.getString(data.getColumnIndex(AlexandriaContract.AuthorEntry.AUTHOR));
-        String[] authorsArr = authors.split(",");
-        ((TextView) rootView.findViewById(R.id.authors)).setLines(authorsArr.length);
-        ((TextView) rootView.findViewById(R.id.authors)).setText(authors.replace(",", "\n"));
+        if(authors!=null) {
+            String[] authorsArr = authors.split(",");
+            ((TextView) rootView.findViewById(R.id.authors)).setLines(authorsArr.length);
+            ((TextView) rootView.findViewById(R.id.authors)).setText(authors.replace(",", "\n"));
+        }else{
+
+        }((TextView) rootView.findViewById(R.id.authors)).setText("");
         String imgUrl = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
         if (Patterns.WEB_URL.matcher(imgUrl).matches()) {
             new DownloadImage((ImageView) rootView.findViewById(R.id.bookCover)).execute(imgUrl);
@@ -224,17 +221,6 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     public void onLoaderReset(android.support.v4.content.Loader<Cursor> loader) {
 
     }
-
-    private void clearFields() {
-        ((TextView) rootView.findViewById(R.id.bookTitle)).setText("");
-        ((TextView) rootView.findViewById(R.id.bookSubTitle)).setText("");
-        ((TextView) rootView.findViewById(R.id.authors)).setText("");
-        ((TextView) rootView.findViewById(R.id.categories)).setText("");
-        rootView.findViewById(R.id.bookCover).setVisibility(View.INVISIBLE);
-        rootView.findViewById(R.id.save_button).setVisibility(View.INVISIBLE);
-        rootView.findViewById(R.id.delete_button).setVisibility(View.INVISIBLE);
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -247,5 +233,17 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     public void onResume() {
         super.onResume();
         MainActivity.setTitleInterface.onSetTitle(title);
+    }
+    private boolean isOnline()
+    {
+        try
+        {
+            ConnectivityManager cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            return cm.getActiveNetworkInfo().isConnectedOrConnecting();
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 }
